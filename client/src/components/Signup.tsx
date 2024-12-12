@@ -32,8 +32,16 @@ export default function Signup() {
 				return;
 			}
 			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/signup`
+				`${import.meta.env.VITE_API_URL}/auth/signup`,
+				{
+					method: "POST",
+					body: JSON.stringify(formData),
+					headers: {
+						"Content-type": "application/json",
+					},
+				}
 			);
+			console.log(response, 'response')
 			const data = await response.json();
 			console.log(data, "this is data for signup");
 		} catch (error) {
