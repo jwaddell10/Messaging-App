@@ -1,11 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "npx tsc",
     "test": "test",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "dev": "npx ts-node src/app.ts"
+
   },
   "author": "Jonathan Waddell",
   "license": "ISC",

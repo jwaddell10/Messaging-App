@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { Link } from "react-router";
 import Submit from "../Submit";
 
 interface LogInFormData {
@@ -23,21 +24,42 @@ export default function Login() {
 	};
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		console.log('submit runs');
 		event.preventDefault();
 		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_URL}/login`
-			);
-			const data = await response.json();
-			console.log(data, "data for login");
-		} catch (error) {
-			if (error instanceof Error) {
-				setError(error.message);
-			} else {
-				throw error;
+		  console.log(`${import.meta.env.VITE_API_URL}/auth/login`);
+		  const response = await fetch(
+			`${import.meta.env.VITE_API_URL}/auth/login`,
+			{
+			  method: "POST",
+			  body: JSON.stringify(formData),
+			  headers: {
+				"Accept": "application/json",
+				"Content-Type": "application/json",
+			  },
 			}
+		  );
+		  
+		  if (!response.ok) {
+			throw new Error(`HTTP Error, status ${response.status}`);
+		  }
+		  
+		  console.log(response, "response login");
+		  
+		  const data = await response.json();
+		  console.log(data, "data for login");
+		  
+		  // Handle successful login here (e.g., store token, redirect)
+		  
+		} catch (error) {
+		  if (error instanceof Error) {
+			setError(error.message);
+		  } else {
+			setError('An unknown error occurred');
+		  }
+		  console.error('Login error:', error);
 		}
-	};
+	  };
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -58,6 +80,9 @@ export default function Login() {
 				required
 			/>
 			<Submit text="Log In" />
+			<div className="redirect-to-signup">
+				Not a member? Sign up <Link to="/signup">here</Link>
+			</div>
 			{error}
 		</form>
 	);
