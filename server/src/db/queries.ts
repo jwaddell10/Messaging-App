@@ -15,6 +15,26 @@ export default {
 			throw new Error(error);
 		}
 	},
+	findAllUsers: async () => {
+		try {
+			const users = await prisma.user.findMany({
+				select: {
+					id: true,
+					name: true,
+					password: false,
+					senderMessagesId: true,
+					receiverMessagesid: true,
+					Messagesid: true,
+					sender: true,
+					receiver: true,
+					Messages: true,
+				},
+			});
+			return users;
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
 	createUser: async (name: string, password: string) => {
 		try {
 			const saltRounds = 8;

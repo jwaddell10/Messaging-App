@@ -16,7 +16,7 @@ export default function Signup() {
 		confirmPassword: "",
 	});
 
-	const [error, setError] = useState("");
+	const [error, setError] = useState<string>("");
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
@@ -48,7 +48,7 @@ export default function Signup() {
 			if (data.token) {
 				localStorage.setItem("token", data.token);
 				navigate("/");
-			} else setError(data.message);
+			} else setError(data.message || "Signup failed. Please try again.");
 		} catch (error) {
 			if (error instanceof Error) {
 				setError(error.message);
@@ -66,6 +66,7 @@ export default function Signup() {
 				name="username"
 				value={formData.username}
 				onChange={handleChange}
+				aria-label="Enter your username"
 				required
 			/>
 			<label htmlFor="password">Password:</label>
@@ -74,6 +75,7 @@ export default function Signup() {
 				name="password"
 				value={formData.password}
 				onChange={handleChange}
+				aria-label="Enter your password"
 				required
 			/>
 			<label htmlFor="confirmPassword">Confirm Password:</label>
@@ -82,6 +84,7 @@ export default function Signup() {
 				name="confirmPassword"
 				value={formData.confirmPassword}
 				onChange={handleChange}
+				aria-label="Confirm your password"
 				required
 			/>
 			<Submit text="Sign Up" />

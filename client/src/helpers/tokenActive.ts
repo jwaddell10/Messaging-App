@@ -1,19 +1,26 @@
 import { jwtDecode } from "jwt-decode";
 
-export default function tokenActive(token: string) {
-	const decodedToken = jwtDecode(token);
+interface DecodedToken {
+	exp?: number;
+}
 
-	const { exp } = decodedToken;
+export default function tokenActive(token: string): boolean {
+	try {
+		const decodedToken: DecodedToken = jwtDecode(token);
 
-	if (exp !== undefined) {
-		const currentDate = new Date(Date.now());
-		const expirationDate = new Date(exp * 1000);
-
-		if (currentDate <= expirationDate) {
-			return true;
-		} else {
-			localStorage.removeItem("token");
+		if (!decodedToken.exp) {
 			return false;
 		}
-	} else throw new Error("expiration date undefined");
+
+		const isTokenValid = Date.now() <= decodedToken.exp * 1000;
+
+		if (!isTokenValid) {
+			localStorage.removeItem("token");
+		}
+
+		return isTokenValid;
+	} catch (error) {
+		console.error("Error decoding token:", error);
+		return false;
+	}
 }
