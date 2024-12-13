@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import Submit from "../Submit";
 
 interface LogInFormData {
@@ -8,6 +8,7 @@ interface LogInFormData {
 }
 
 export default function Login() {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState<LogInFormData>({
 		username: "",
 		password: "",
@@ -24,42 +25,39 @@ export default function Login() {
 	};
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		console.log('submit runs');
 		event.preventDefault();
 		try {
-		  console.log(`${import.meta.env.VITE_API_URL}/auth/login`);
-		  const response = await fetch(
-			`${import.meta.env.VITE_API_URL}/auth/login`,
-			{
-			  method: "POST",
-			  body: JSON.stringify(formData),
-			  headers: {
-				"Accept": "application/json",
-				"Content-Type": "application/json",
-			  },
+			console.log(`${import.meta.env.VITE_API_URL}/auth/login`);
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/auth/login`,
+				{
+					method: "POST",
+					body: JSON.stringify(formData),
+					headers: {
+						"Content-Type": "application/json",
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error(`HTTP Error, status ${response.status}`);
 			}
-		  );
-		  
-		  if (!response.ok) {
-			throw new Error(`HTTP Error, status ${response.status}`);
-		  }
-		  
-		  console.log(response, "response login");
-		  
-		  const data = await response.json();
-		  console.log(data, "data for login");
-		  
-		  // Handle successful login here (e.g., store token, redirect)
-		  
+
+			const data = await response.json();
+			console.log(data, 'data from login')
+			if (data.token) {
+				localStorage.setItem("token", data.token);
+				navigate("/");
+			} else setError(data.message);
 		} catch (error) {
-		  if (error instanceof Error) {
-			setError(error.message);
-		  } else {
-			setError('An unknown error occurred');
-		  }
-		  console.error('Login error:', error);
+			if (error instanceof Error) {
+				setError(error.message);
+			} else {
+				setError("An unknown error occurred");
+			}
+			console.error("Login error:", error);
 		}
-	  };
+	};
 
 	return (
 		<form onSubmit={handleSubmit}>

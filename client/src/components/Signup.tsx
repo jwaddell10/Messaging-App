@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import Submit from "../Submit";
+import { useNavigate } from "react-router";
 
 interface SignUpFormData {
 	username: string;
@@ -8,6 +9,7 @@ interface SignUpFormData {
 }
 
 export default function Signup() {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState<SignUpFormData>({
 		username: "",
 		password: "",
@@ -41,9 +43,12 @@ export default function Signup() {
 					},
 				}
 			);
-			console.log(response, 'response')
 			const data = await response.json();
-			console.log(data, "this is data for signup");
+
+			if (data.token) {
+				localStorage.setItem("token", data.token);
+				navigate("/");
+			} else setError(data.message);
 		} catch (error) {
 			if (error instanceof Error) {
 				setError(error.message);

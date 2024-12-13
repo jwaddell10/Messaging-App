@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import bcrypt from "bcryptjs";
-import { create } from "domain";
 
 export default {
 	findUser: async (username: string) => {
