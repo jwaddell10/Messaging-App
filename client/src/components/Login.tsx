@@ -27,7 +27,6 @@ export default function Login() {
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		try {
-			console.log(`${import.meta.env.VITE_API_URL}/auth/login`);
 			const response = await fetch(
 				`${import.meta.env.VITE_API_URL}/auth/login`,
 				{
@@ -44,7 +43,6 @@ export default function Login() {
 			}
 
 			const data = await response.json();
-			console.log(data, 'data from login')
 			if (data.token) {
 				localStorage.setItem("token", data.token);
 				navigate("/");
@@ -55,7 +53,6 @@ export default function Login() {
 			} else {
 				setError("An unknown error occurred");
 			}
-			console.error("Login error:", error);
 		}
 	};
 

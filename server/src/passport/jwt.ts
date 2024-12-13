@@ -8,17 +8,16 @@ if (!JWT_SECRET) {
 	throw new Error("JWT_SECRET is not defined in the environment variables");
 }
 
-const generateToken = async (user: string) => {
+const generateUserJWT = async (user: string) => {
 	return jwt.sign({ user }, JWT_SECRET, { expiresIn: "1d" });
 };
 
-const verifyToken: RequestHandler = (
+const extractBearerToken: RequestHandler = (
 	req: Request,
 	res: Response,
 	next: NextFunction
 ) => {
 	const bearerHeader = req.headers["authorization"];
-	console.log(bearerHeader, "bearer header");
 
 	if (typeof bearerHeader !== "undefined") {
 		const bearer = bearerHeader.split(" ");
@@ -33,7 +32,7 @@ const verifyToken: RequestHandler = (
 	}
 };
 
-function verifyJWT(token: string) {
+function validateJWTAndGetUser(token: string) {
 	try {
 		const verifiedUser = jwt.verify(token, JWT_SECRET as string);
 		return verifiedUser;
@@ -43,4 +42,4 @@ function verifyJWT(token: string) {
 	}
 }
 
-export { generateToken, verifyToken, verifyJWT };
+export { generateUserJWT, extractBearerToken, validateJWTAndGetUser };

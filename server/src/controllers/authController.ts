@@ -1,9 +1,8 @@
 import expressAsyncHandler from "express-async-handler";
 const asyncHandler = expressAsyncHandler;
 import db from "../db/queries";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { generateToken } from "../passport/jwt";
+import { generateUserJWT } from "../passport/jwt";
 require("dotenv").config();
 
 const secret = process.env.JWT_SECRET;
@@ -26,17 +25,10 @@ export const signUpPost = asyncHandler(
 			req.body.password
 		);
 
-		jwt.sign(
-			{ createdUser },
-			secret,
-			{ expiresIn: "1d" },
-			(error, token) => {
-				if (error) {
-					res.json({ error });
-				}
-				res.json({ token });
-			}
-		);
+		if (createdUser) {
+			const token = await generateUserJWT(createdUser.name);
+			res.json({ token });
+		}
 	}
 );
 
@@ -52,7 +44,7 @@ export const logInPost = asyncHandler(
 		const match = await bcrypt.compare(password, user.password);
 
 		if (match) {
-			const token = await generateToken(username as string);
+			const token = await generateUserJWT(username as string);
 			res.json({ token });
 		} else {
 			res.status(401).json({ message: "Incorrect password" });

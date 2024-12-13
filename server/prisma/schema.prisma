@@ -23,7 +23,6 @@ model User {
   receiverMessagesid Int?
   Messages           Messages? @relation(fields: [Messagesid], references: [id])
   Messagesid         Int?
-  messagesId         Int?
 }
 
 model Messages {
