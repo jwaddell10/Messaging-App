@@ -12,7 +12,6 @@ export default function Router({ isLoggedIn, setIsLoggedIn }) {
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<NavBar />}>
-					{/* <Route index element={<Home />}></Route> */}
 					{isLoggedIn ? (
 						<Route path="/" element={<Home />} />
 					) : (
