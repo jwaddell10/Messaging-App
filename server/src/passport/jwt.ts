@@ -2,6 +2,12 @@ require("dotenv").config();
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
+interface JWT_Payload {
+	user: string;
+	iat: number;
+	exp: number;
+}
+
 // Ensure JWT_SECRET is defined
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
@@ -34,7 +40,7 @@ const extractBearerToken: RequestHandler = (
 
 function validateJWTAndGetUser(token: string) {
 	try {
-		const verifiedUser = jwt.verify(token, JWT_SECRET as string);
+		const verifiedUser = jwt.verify(token, JWT_SECRET as string) as unknown as JWT_Payload;
 		return verifiedUser;
 	} catch (error) {
 		console.error("JWT verification failed:", error);

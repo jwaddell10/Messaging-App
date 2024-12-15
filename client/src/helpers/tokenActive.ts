@@ -13,7 +13,7 @@ export default function tokenActive(token: string): boolean {
 		}
 
 		const isTokenValid = Date.now() <= decodedToken.exp * 1000;
-console.log(isTokenValid, 'istoken valid')
+
 		if (!isTokenValid) {
 			localStorage.removeItem("token");
 		}

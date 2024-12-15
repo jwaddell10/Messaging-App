@@ -45,7 +45,7 @@ export const logInPost = asyncHandler(
 
 		if (match) {
 			const token = await generateUserJWT(username as string);
-			res.json({ token: token, username: username });
+			res.json({ token: token, username: username, id: user.id  });
 		} else {
 			res.status(401).json({ message: "Incorrect password" });
 		}

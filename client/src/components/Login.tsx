@@ -49,6 +49,7 @@ export default function Login({setIsLoggedIn}) {
 			if (data.token) {
 				localStorage.setItem("token", data.token);
 				localStorage.setItem("username", data.username)
+				localStorage.setItem("id", data.id)
 				setIsLoggedIn(true)
 				navigate("/");
 			} else setError(data.message);

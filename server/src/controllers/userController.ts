@@ -5,6 +5,14 @@ import { validateJWTAndGetUser } from "../passport/jwt";
 import db from "../db/queries";
 
 export const getAllUsers = asyncHandler(async (req, res, next) => {
+	const verifiedUser = validateJWTAndGetUser(req.token);
+
+	if (!verifiedUser) {
+		res.status(401).json({
+			message:
+				"Unable to validate user credentials. Try logging out/logging in to reauthenticate",
+		});
+	}
 	const users = await db.findAllUsers();
 
 	if (!users) {
@@ -29,7 +37,6 @@ export const getSingleUser = asyncHandler(async (req, res, next) => {
 
 export const updateUserProfile = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
-
 		//check if user can access
 		const verifiedUser = validateJWTAndGetUser(req.token);
 

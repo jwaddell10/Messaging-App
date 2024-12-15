@@ -6,6 +6,19 @@ export default {
 	findUserByName: async (username: string) => {
 		try {
 			const user = await prisma.user.findUnique({
+				select: {
+					id: true,
+					bio: true,
+					name: true,
+					password: true,
+					senderMessagesId: true,
+					receiverMessagesid: true,
+					Messagesid: true,
+					sender: true,
+					receiver: true,
+					Messages: true,
+				},
+
 				where: {
 					name: username,
 				},
@@ -94,7 +107,7 @@ export default {
 					id: id,
 				},
 				data: {
-					bio
+					bio,
 				},
 			});
 			return user;

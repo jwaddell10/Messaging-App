@@ -1,10 +1,7 @@
 import { Outlet, Link } from "react-router";
-import useFetchUsers from "../helpers/useFetchUsers";
-// import { useContext } from "react";
-// import { AuthContext } from "../App";
 
 export default function NavBar({isLoggedIn, setIsLoggedIn}) {
-	const { users, error } = useFetchUsers();
+	const id = localStorage.getItem("id")
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
@@ -17,7 +14,7 @@ export default function NavBar({isLoggedIn, setIsLoggedIn}) {
 			<Link to="/">Home</Link>
 			{isLoggedIn ? (
 				<div>
-					<Link to={`/profile/${users.id}`}>Profile</Link>
+					<Link to={`/profile/${id}`}>Profile</Link>
 					<Link to="/" onClick={handleLogout}>
 						Logout
 					</Link>

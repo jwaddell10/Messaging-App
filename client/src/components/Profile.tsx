@@ -1,10 +1,10 @@
 import { useParams } from "react-router";
 import { ChangeEvent, FormEvent, useState } from "react";
 import useFetchProfile from "../helpers/useFetchProfile";
+import updateProfile from "../helpers/updateProfile";
 
 export default function Profile() {
 	const { id } = useParams();
-	console.log(id, 'id in profile')
 	if (id === undefined) {
 		throw new Error("An error has occurred, try again later");
 	}
@@ -19,25 +19,14 @@ export default function Profile() {
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const token = localStorage.getItem("token");
-		try {
-			await fetch(
-				`${import.meta.env.VITE_API_URL}/user/${id}`,
-				{
-					method: "PUT",
-					body: JSON.stringify({bio: formBio}),
-					headers: {
-						Authorization: `Bearer ${token}`,
-						"Content-Type": "application/json"
-					},
-				}
-			);
+		updateProfile(
+			`${import.meta.env.VITE_API_URL}/user/${id}`,
+			formBio,
+			token
+		).then(() => {
 			setFormBio("");
 			setRefreshTrigger(!refreshTrigger);
-		} catch (error) {
-			if (error instanceof Error) {
-				throw new Error(error.message);
-			} else throw error;
-		}
+		});
 	};
 
 	return (
