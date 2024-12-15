@@ -42,4 +42,4 @@ function validateJWTAndGetUser(token: string) {
 	}
 }
 
-export { generateUserJWT, extractBearerToken, validateJWTAndGetUser };
+export { generateUserJWT, extractBearerToken, validateJWTAndGetUser, jwt };

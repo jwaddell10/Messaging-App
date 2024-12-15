@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,19 +11,20 @@ model User {
   id                 Int       @id @default(autoincrement())
   name               String    @unique
   password           String
-  sender             Messages? @relation(name: "sender", fields: [senderMessagesId], references: [id])
   senderMessagesId   Int?
-  receiver           Messages? @relation(name: "receiver", fields: [receiverMessagesid], references: [id])
   receiverMessagesid Int?
-  Messages           Messages? @relation(fields: [Messagesid], references: [id])
   Messagesid         Int?
+  bio                String?
+  Messages           Messages? @relation(fields: [Messagesid], references: [id])
+  receiver           Messages? @relation("receiver", fields: [receiverMessagesid], references: [id])
+  sender             Messages? @relation("sender", fields: [senderMessagesId], references: [id])
 }
 
 model Messages {
   id               Int      @id @default(autoincrement())
-  author           User[]
   text             String
   createdAt        DateTime @db.Date
-  sender           User[]   @relation("sender")
+  author           User[]
   receivedMessages User[]   @relation("receiver")
+  sender           User[]   @relation("sender")
 }

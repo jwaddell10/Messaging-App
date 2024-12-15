@@ -16,8 +16,10 @@ export default function Login() {
 
 	const [error, setError] = useState<string | null>("");
 
+	// Generics
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
+
 		setFormData((prevData) => ({
 			...prevData,
 			[name]: value,
@@ -43,6 +45,7 @@ export default function Login() {
 			}
 
 			const data = await response.json();
+			console.log(data, 'this is data login')
 			if (data.token) {
 				localStorage.setItem("token", data.token);
 				navigate("/");

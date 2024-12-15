@@ -80,6 +80,7 @@ export default function Signup() {
 			/>
 			<label htmlFor="confirmPassword">Confirm Password:</label>
 			<input
+				autoComplete="current-password"
 				type="password"
 				name="confirmPassword"
 				value={formData.confirmPassword}

@@ -3,6 +3,7 @@ import NavBar from "./components/Navbar";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./components/HomePage/Home";
+import Profile from "./components/Profile";
 
 export default function Router({ isLoggedIn }) {
 	return (
@@ -10,7 +11,10 @@ export default function Router({ isLoggedIn }) {
 			<Routes>
 				<Route path="/" element={<NavBar />}>
 					{isLoggedIn ? (
-						<Route path="/" element={<Home />} />
+						<>
+							<Route path="/" element={<Home />} />
+							<Route path="/profile/:id" element={<Profile />} />
+						</>
 					) : (
 						<Route path="/" element={<Login />} />
 					)}

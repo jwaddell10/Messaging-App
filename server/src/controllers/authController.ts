@@ -13,7 +13,7 @@ if (!secret) {
 
 export const signUpPost = asyncHandler(
 	async (req: { body: { username: string; password: string } }, res: any) => {
-		const user = await db.findUser(req.body.username);
+		const user = await db.findUserByName(req.body.username);
 		if (user) {
 			return res.json({
 				message: "Username is already taken. Try another",
@@ -35,7 +35,7 @@ export const signUpPost = asyncHandler(
 export const logInPost = asyncHandler(
 	async (req: { body: { username: string; password: string } }, res: any) => {
 		const { username, password } = req.body;
-		const user = await db.findUser(username);
+		const user = await db.findUserByName(username);
 
 		if (!user) {
 			return res.status(401).json({ message: "Incorrect username" });

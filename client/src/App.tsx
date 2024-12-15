@@ -10,7 +10,7 @@ import tokenActive from "./helpers/tokenActive";
 
 export default function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+// localStorage.clear();
 	useEffect(() => {
 		const JWTToken = localStorage.getItem("token") ?? "";
 		setIsLoggedIn(tokenActive(JWTToken));

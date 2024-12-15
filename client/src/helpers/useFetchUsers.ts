@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 
+interface User {
+    id: number;
+	name: string;
+}
+
 export default function useFetchUsers() {
-	const [users, setUsers] = useState<string>("");
+	const [users, setUsers] = useState<User[]>([]);
 	const [error, setError] = useState<string>("");
 
 	useEffect(() => {
