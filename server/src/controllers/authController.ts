@@ -27,7 +27,7 @@ export const signUpPost = asyncHandler(
 
 		if (createdUser) {
 			const token = await generateUserJWT(createdUser.name);
-			res.json({ token });
+			res.json({ token: token, username: createdUser.name });
 		}
 	}
 );
@@ -45,7 +45,7 @@ export const logInPost = asyncHandler(
 
 		if (match) {
 			const token = await generateUserJWT(username as string);
-			res.json({ token });
+			res.json({ token: token, username: username });
 		} else {
 			res.status(401).json({ message: "Incorrect password" });
 		}

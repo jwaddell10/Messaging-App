@@ -4,6 +4,7 @@ import useFetchProfile from "../helpers/useFetchProfile";
 
 export default function Profile() {
 	const { id } = useParams();
+	console.log(id, 'id in profile')
 	if (id === undefined) {
 		throw new Error("An error has occurred, try again later");
 	}
@@ -19,7 +20,7 @@ export default function Profile() {
 		event.preventDefault();
 		const token = localStorage.getItem("token");
 		try {
-			const response = await fetch(
+			await fetch(
 				`${import.meta.env.VITE_API_URL}/user/${id}`,
 				{
 					method: "PUT",
@@ -30,8 +31,6 @@ export default function Profile() {
 					},
 				}
 			);
-			const data = await response.json();
-			console.log(data, "data from put");
 			setFormBio("");
 			setRefreshTrigger(!refreshTrigger);
 		} catch (error) {

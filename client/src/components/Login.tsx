@@ -7,7 +7,7 @@ interface LogInFormData {
 	password: string;
 }
 
-export default function Login() {
+export default function Login({setIsLoggedIn}) {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState<LogInFormData>({
 		username: "",
@@ -48,6 +48,8 @@ export default function Login() {
 			console.log(data, 'this is data login')
 			if (data.token) {
 				localStorage.setItem("token", data.token);
+				localStorage.setItem("username", data.username)
+				setIsLoggedIn(true)
 				navigate("/");
 			} else setError(data.message);
 		} catch (error) {

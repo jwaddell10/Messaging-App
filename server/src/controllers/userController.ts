@@ -29,6 +29,8 @@ export const getSingleUser = asyncHandler(async (req, res, next) => {
 
 export const updateUserProfile = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
+
+		//check if user can access
 		const verifiedUser = validateJWTAndGetUser(req.token);
 
 		if (!verifiedUser) {
