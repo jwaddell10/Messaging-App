@@ -8,13 +8,22 @@ export default function UserSideBar() {
 	//display all users (except user who is currently logged in) in UserSideBar
 	const filteredUsers = users.filter((user) => user.name !== loggedInUser);
 
+	if (error) {
+		return (
+			<p style={{ color: "red" }}>
+				Failed to load users. Please try again later
+			</p>
+		);
+	}
+
 	return (
 		<section>
-			{error}
 			{filteredUsers &&
 				filteredUsers.map((user) => (
 					<li key={user.id}>
-						<Link to={`/message/${user.id}/${user.name}`}>{user.name}</Link>
+						<Link to={`/message/${user.id}/${user.name}`}>
+							{user.name}
+						</Link>
 					</li>
 				))}
 		</section>

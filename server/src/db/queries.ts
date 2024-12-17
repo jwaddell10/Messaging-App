@@ -18,7 +18,6 @@ export default {
 					receiver: true,
 					Messages: true,
 				},
-
 				where: {
 					name: username,
 				},
@@ -111,6 +110,18 @@ export default {
 				},
 			});
 			return user;
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	findReceivedMessages: async (id: number) => {
+		try {
+			const receivedMessages = await prisma.messages.findMany({
+				where: {
+					id: id,
+				},
+			});
+			return receivedMessages;
 		} catch (error: any) {
 			throw new Error(error);
 		}

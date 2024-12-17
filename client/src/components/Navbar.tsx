@@ -1,21 +1,19 @@
 import { Outlet, Link } from "react-router";
+import { AuthContext } from "../helpers/authContext";
+import { useContext } from "react";
 
-export default function NavBar({isLoggedIn, setIsLoggedIn}) {
+export default function NavBar() {
+
+	const { user, logout } = useContext(AuthContext)
 	const id = localStorage.getItem("id")
-
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		localStorage.removeItem("username");
-		setIsLoggedIn(false);
-	};
 	return (
 		<>
 			NavBar
 			<Link to="/">Home</Link>
-			{isLoggedIn ? (
+			{user ? (
 				<div>
 					<Link to={`/profile/${id}`}>Profile</Link>
-					<Link to="/" onClick={handleLogout}>
+					<Link to="/" onClick={logout}>
 						Logout
 					</Link>
 				</div>

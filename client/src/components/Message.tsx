@@ -1,6 +1,9 @@
-import { useParams } from "react-router";
+import useFetchMessages from "../helpers/useFetchMessages";
 
 export default function Message() {
-    const { id, name } = useParams()
-    console.log(id, 'id', name, 'name use params message')
+	const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id")
+    console.log(token, 'token', id, 'id')
+	useFetchMessages(id, token);
+	return <>Message</>;
 }

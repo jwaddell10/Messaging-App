@@ -4,19 +4,21 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./components/HomePage/Home";
 import Profile from "./components/Profile";
+import { useAuth } from "./helpers/authContext";
 
-export default function Router({ isLoggedIn, setIsLoggedIn }) {
+export default function Router() {
+	const { user } = useAuth()
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}>
-					{isLoggedIn ? (
+				<Route path="/" element={<NavBar/>}>
+					{user ? (
 						<>
 							<Route path="/" element={<Home />} />
 							<Route path="/profile/:id" element={<Profile />} />
 						</>
 					) : (
-						<Route path="/" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
+						<Route path="/" element={<Login/>} />
 					)}
 					<Route path="/signup" element={<Signup />}></Route>
 				</Route>

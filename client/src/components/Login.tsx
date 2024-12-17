@@ -1,22 +1,22 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import Submit from "../Submit";
-
+import { useAuth } from "../helpers/authContext";
 interface LogInFormData {
 	username: string;
 	password: string;
 }
 
-export default function Login({setIsLoggedIn}) {
-	const navigate = useNavigate();
+export default function Login() {
 	const [formData, setFormData] = useState<LogInFormData>({
 		username: "",
 		password: "",
 	});
 
+	const { login } = useAuth();
+
 	const [error, setError] = useState<string | null>("");
 
-	// Generics
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 
@@ -45,13 +45,13 @@ export default function Login({setIsLoggedIn}) {
 			}
 
 			const data = await response.json();
-			console.log(data, 'this is data login')
+			console.log(data, "this is data login");
 			if (data.token) {
-				localStorage.setItem("token", data.token);
-				localStorage.setItem("username", data.username)
-				localStorage.setItem("id", data.id)
-				setIsLoggedIn(true)
-				navigate("/");
+				login({
+					id: data.id,
+					username: data.username,
+					token: data.token,
+				});
 			} else setError(data.message);
 		} catch (error) {
 			if (error instanceof Error) {

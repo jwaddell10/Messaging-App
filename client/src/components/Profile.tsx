@@ -1,16 +1,17 @@
-import { useParams } from "react-router";
 import { ChangeEvent, FormEvent, useState } from "react";
 import useFetchProfile from "../helpers/useFetchProfile";
 import updateProfile from "../helpers/updateProfile";
 
 export default function Profile() {
-	const { id } = useParams();
-	if (id === undefined) {
-		throw new Error("An error has occurred, try again later");
+	const id = localStorage.getItem("id");
+	const token = localStorage.getItem("token");
+	if (id === null || token === null) {
+		throw new Error("id is null");
 	}
-	const { profile, error, refreshTrigger, setRefreshTrigger } =
-		useFetchProfile(id);
+	const { profile, error, refetchProfile } = useFetchProfile(id);
 	const [formBio, setFormBio] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		setFormBio(event.target.value);
@@ -18,16 +19,27 @@ export default function Profile() {
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		const token = localStorage.getItem("token");
-		updateProfile(
-			`${import.meta.env.VITE_API_URL}/user/${id}`,
-			formBio,
-			token
-		).then(() => {
-			setFormBio("");
-			setRefreshTrigger(!refreshTrigger);
-		});
+		setIsLoading(true);
+		setSubmitError(null);
+
+		try {
+			updateProfile(
+				`${import.meta.env.VITE_API_URL}/user/${id}`,
+				formBio,
+				token
+			).then(() => {
+				setFormBio("");
+				refetchProfile();
+			});
+		} catch (error) {
+			console.log(error, "Error updating profile");
+			setSubmitError("Failed to load profile. Please try again");
+		}
 	};
+
+	if (error) {
+		return <div>Error loading profile: {error}</div>;
+	}
 
 	return (
 		<div>
@@ -39,8 +51,14 @@ export default function Profile() {
 						name="bio"
 						value={formBio}
 						onChange={handleChange}
+						disabled={isLoading}
 					/>
-					<button>submit</button>
+					<button type="submit" disabled={isLoading}>
+						{isLoading ? "Submitting" : "Submit"}
+					</button>
+					{submitError && (
+						<p style={{ color: "red" }}>{submitError}</p>
+					)}
 				</form>
 			)}
 		</div>

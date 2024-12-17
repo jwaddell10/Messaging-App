@@ -9,6 +9,7 @@ import helmet from "helmet";
 import cors from "cors";
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
+import messageRouter from "./routes/message";
 import errorHandler from "./middlewares/errorHandler";
 require("dotenv").config();
 
@@ -25,7 +26,8 @@ app.use(helmet());
 //need to setup passport and sessions//
 
 app.use("/auth", authRouter);
-app.use("/user", userRouter)
+app.use("/user", userRouter);
+app.use("/message", messageRouter);
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, this is Express + TypeScript");
 });
