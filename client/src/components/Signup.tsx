@@ -17,6 +17,8 @@ export default function Signup() {
 		confirmPassword: "",
 	});
 
+	const { setToken } = useStorageContext();
+
 	const [error, setError] = useState<string>("");
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +49,7 @@ export default function Signup() {
 			const data = await response.json();
 
 			if (data.token) {
-				localStorage.setItem("token", data.token);
+				setToken(data.token);
 				navigate("/");
 			} else setError(data.message || "Signup failed. Please try again.");
 		} catch (error) {

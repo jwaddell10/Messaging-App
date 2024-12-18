@@ -1,5 +1,5 @@
 import useFetchUsers from "../../helpers/useFetchUsers";
-import { Link } from "react-router";
+import "../../Styles/UserSideBar.css";
 
 export default function UserSideBar() {
 	const loggedInUser = localStorage.getItem("username");
@@ -10,21 +10,20 @@ export default function UserSideBar() {
 
 	if (error) {
 		return (
-			<p style={{ color: "red" }}>
+			<p style={{ color: "white" }}>
 				Failed to load users. Please try again later
 			</p>
 		);
 	}
 
 	return (
-		<section>
+		<section className="sidebar">
+			<h1 className="sidebar-title">Users</h1>
 			{filteredUsers &&
 				filteredUsers.map((user) => (
-					<li key={user.id}>
-						<Link to={`/message/${user.id}/${user.name}`}>
-							{user.name}
-						</Link>
-					</li>
+					<ul className="sidebar-user-list" key={user.id}>
+						<li>{user.name}</li>
+					</ul>
 				))}
 		</section>
 	);

@@ -13,11 +13,11 @@ interface StorageContextType {
 
 //needs object with token, id, and username
 export const StorageContext = createContext<StorageContextType>({
-	token: "",
+	token: localStorage.getItem("token"),
 	setToken: (token) => localStorage.setItem("token", token),
-	id: "",
+	id: localStorage.getItem("id"),
 	setId: (id) => localStorage.setItem("id", id),
-	username: "",
+	username: localStorage.getItem("username"),
 	setUsername: (username) => localStorage.setItem("username", username),
 });
 
