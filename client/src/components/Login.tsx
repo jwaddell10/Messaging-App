@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router";
 import Submit from "../Submit";
 import { useAuth } from "../helpers/authContext";
+import { useStorageContext } from "../helpers/storageContext";
 interface LogInFormData {
 	username: string;
 	password: string;
@@ -14,6 +15,7 @@ export default function Login() {
 	});
 
 	const { login } = useAuth();
+	const { setToken, setId, setUsername } = useStorageContext();
 
 	const [error, setError] = useState<string | null>("");
 
@@ -45,13 +47,12 @@ export default function Login() {
 			}
 
 			const data = await response.json();
-			console.log(data, "this is data login");
+
 			if (data.token) {
-				login({
-					id: data.id,
-					username: data.username,
-					token: data.token,
-				});
+				login();
+				setToken(data.token)
+				setId(data.id)
+				setUsername(data.username)
 			} else setError(data.message);
 		} catch (error) {
 			if (error instanceof Error) {

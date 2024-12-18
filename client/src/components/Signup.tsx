@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import Submit from "../Submit";
 import { useNavigate } from "react-router";
+import { useStorageContext } from "../helpers/storageContext";
 
 interface SignUpFormData {
 	username: string;

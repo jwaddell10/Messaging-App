@@ -36,13 +36,11 @@ export const logInPost = asyncHandler(
 	async (req: { body: { username: string; password: string } }, res: any) => {
 		const { username, password } = req.body;
 		const user = await db.findUserByName(username);
-
 		if (!user) {
 			return res.status(401).json({ message: "Incorrect username" });
 		}
 
 		const match = await bcrypt.compare(password, user.password);
-
 		if (match) {
 			const token = await generateUserJWT(username as string);
 			res.json({ token: token, username: username, id: user.id  });
