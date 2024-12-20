@@ -15,8 +15,8 @@ export default function App() {
 		setUser(tokenActive(JWTToken));
 	}, [setUser, token, user]);
 	return (
-		<>
+		<div className="page-container">
 			<Router />
-		</>
+		</div>
 	);
 }

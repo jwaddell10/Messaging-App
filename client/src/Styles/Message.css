@@ -1,0 +1,4 @@
+.messages-section {
+    display: grid;
+    grid-area: main;
+}

@@ -13,18 +13,20 @@ model User {
   password           String
   senderMessagesId   Int?
   receiverMessagesid Int?
-  Messagesid         Int?
+  // Messagesid         Int?
   bio                String?
-  Messages           Messages? @relation(fields: [Messagesid], references: [id])
+  // Messages           Messages? @relation(fields: [Messagesid], references: [id])
   receiver           Messages? @relation("receiver", fields: [receiverMessagesid], references: [id])
   sender             Messages? @relation("sender", fields: [senderMessagesId], references: [id])
 }
 
 model Messages {
-  id               Int      @id @default(autoincrement())
-  text             String
-  createdAt        DateTime @db.Date
-  author           User[]
-  receivedMessages User[]   @relation("receiver")
-  sender           User[]   @relation("sender")
+  id                 Int      @id @default(autoincrement())
+  text               String
+  createdAt          DateTime @db.Date
+  // author           User[]
+  receivedMessagesId Int?
+  receivedMessages   User[]   @relation("receiver")
+  sentMessagesId     Int?
+  sentMessages       User[]   @relation("sender")
 }

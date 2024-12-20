@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import bcrypt from "bcryptjs";
+import { create } from "domain";
 
 export default {
 	findUserByName: async (username: string) => {
@@ -13,10 +14,9 @@ export default {
 					password: true,
 					senderMessagesId: true,
 					receiverMessagesid: true,
-					Messagesid: true,
-					sender: true,
+					// Messagesid: true,
 					receiver: true,
-					Messages: true,
+					// Messages: true,
 				},
 				where: {
 					name: username,
@@ -37,10 +37,9 @@ export default {
 					password: false,
 					senderMessagesId: true,
 					receiverMessagesid: true,
-					Messagesid: true,
-					sender: true,
+					// Messagesid: true,
 					receiver: true,
-					Messages: true,
+					// Messages: true,
 				},
 				where: {
 					id: id,
@@ -60,10 +59,9 @@ export default {
 					password: false,
 					senderMessagesId: true,
 					receiverMessagesid: true,
-					Messagesid: true,
-					sender: true,
+					// Messagesid: true,
 					receiver: true,
-					Messages: true,
+					// Messages: true,
 				},
 			});
 			return users;
@@ -97,10 +95,9 @@ export default {
 					password: false,
 					senderMessagesId: true,
 					receiverMessagesid: true,
-					Messagesid: true,
-					sender: true,
+					// Messagesid: true,
 					receiver: true,
-					Messages: true,
+					// Messages: true,
 				},
 				where: {
 					id: id,
@@ -122,6 +119,29 @@ export default {
 				},
 			});
 			return receivedMessages;
+		} catch (error: any) {
+			throw new Error(error);
+		}
+	},
+	createMessage: async (
+		text: string,
+		senderId: number,
+		receiverId: number
+	) => {
+		try {
+			const createdMessage = await prisma.messages.create({
+				data: {
+					text: text,
+					createdAt: new Date(),
+					sentMessages: {
+						connect: { id: senderId },
+					},
+					receivedMessages: {
+						connect: { id: receiverId },
+					},
+				},
+			});
+			console.log(createdMessage, "created message");
 		} catch (error: any) {
 			throw new Error(error);
 		}
