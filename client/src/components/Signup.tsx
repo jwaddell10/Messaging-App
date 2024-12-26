@@ -17,7 +17,7 @@ export default function Signup() {
 		confirmPassword: "",
 	});
 
-	const { setToken } = useStorageContext();
+	const { setToken, setLoggedInUserId, setUsername } = useStorageContext();
 
 	const [error, setError] = useState<string>("");
 
@@ -50,6 +50,8 @@ export default function Signup() {
 
 			if (data.token) {
 				setToken(data.token);
+				setLoggedInUserId(data.id)
+				setUsername(data.username)
 				navigate("/");
 			} else setError(data.message || "Signup failed. Please try again.");
 		} catch (error) {

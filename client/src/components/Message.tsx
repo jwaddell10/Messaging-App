@@ -21,6 +21,7 @@ interface Message {
 
 export default function Message() {
 	const { id } = useParams();
+    console.log(id, 'this is id in use params')
 	const { loggedInUserId, token } = useStorageContext();
 	const { messages } = useFetchMessages(loggedInUserId ?? "", token ?? "");
 	console.log(messages, "messages in message component");

@@ -25,9 +25,11 @@ export const signUpPost = asyncHandler(
 			req.body.password
 		);
 
+		console.log(createdUser, 'created user')
+
 		if (createdUser) {
 			const token = await generateUserJWT(createdUser.name);
-			res.json({ token: token, username: createdUser.name });
+			res.json({ token: token, username: createdUser.name, id: createdUser.id });
 		}
 	}
 );

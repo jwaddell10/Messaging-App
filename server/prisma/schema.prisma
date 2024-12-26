@@ -8,26 +8,28 @@ datasource db {
 }
 
 model User {
-  id                 Int       @id @default(autoincrement())
-  name               String    @unique
-  password           String
-  senderMessagesId   Int?
-  receiverMessagesid Int?
-  Messagesid         Int?
-  bio                String?
-  Messages           Messages? @relation(fields: [Messagesid], references: [id])
-  receiver           Messages? @relation("receiver", fields: [receiverMessagesid], references: [id])
-  sender             Messages? @relation("sender", fields: [senderMessagesId], references: [id])
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  password String
+  bio      String?
+
+  // Messages sent by the user
+  sentMessages Messages[] @relation("SentMessages")
+
+  // Messages received by the user
+  receivedMessages Messages[] @relation("ReceivedMessages")
 }
 
 model Messages {
-  id                 Int      @id @default(autoincrement())
-  text               String
-  createdAt          DateTime @db.Date
-  // author           User[]
-  receivedMessagesId Int?
-  receivedMessages   User[]   @relation("receiver")
-  sentMessagesId     Int?
-  sentMessages       User[]   @relation("sender")
-  User User[]
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+
+  // User who sent the message
+  sender   User @relation("SentMessages", fields: [senderId], references: [id])
+  senderId Int
+
+  // User who received the message
+  receiver   User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId Int
 }

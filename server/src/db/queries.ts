@@ -11,10 +11,9 @@ export default {
 					bio: true,
 					name: true,
 					password: true,
-					senderMessagesId: true,
-					receiverMessagesid: true,
+					sentMessages: true,
+					receivedMessages: true,
 					// Messagesid: true,
-					receiver: true,
 					// Messages: true,
 				},
 				where: {
@@ -34,10 +33,9 @@ export default {
 					bio: true,
 					name: true,
 					password: false,
-					senderMessagesId: true,
-					receiverMessagesid: true,
+					sentMessages: true,
+					receivedMessages: true,
 					// Messagesid: true,
-					receiver: true,
 					// Messages: true,
 				},
 				where: {
@@ -56,10 +54,9 @@ export default {
 					id: true,
 					name: true,
 					password: false,
-					senderMessagesId: true,
-					receiverMessagesid: true,
+					sentMessages: true,
+					receivedMessages: true,
 					// Messagesid: true,
-					receiver: true,
 					// Messages: true,
 				},
 			});
@@ -92,10 +89,9 @@ export default {
 					bio: true,
 					name: true,
 					password: false,
-					senderMessagesId: true,
-					receiverMessagesid: true,
+					sentMessages: true,
+					receivedMessages: true,
 					// Messagesid: true,
-					receiver: true,
 					// Messages: true,
 				},
 				where: {
@@ -121,12 +117,12 @@ export default {
 					id: id
 				},
 				select: {
-					receiver: {
+					receivedMessages: {
 						select: {
 							text: true
 						}
 					},
-					sender: {
+					sentMessages: {
 						select: {
 							text: true
 						}
@@ -163,11 +159,11 @@ export default {
 				data: {
 					text: text,
 					createdAt: new Date(),
-					sentMessages: {
-						connect: [{ id: senderId }],
+					sender: {
+						connect: { id: senderId },
 					},
-					receivedMessages: {
-						connect: [{ id: receiverId }],
+					receiver: {
+						connect: { id: receiverId },
 					},
 				},
 			});
