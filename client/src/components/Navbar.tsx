@@ -6,7 +6,7 @@ import "../Styles/Navbar.css";
 
 export default function NavBar() {
 	const { user, logout } = useContext(AuthContext);
-	const { id } = useStorageContext();
+	const { loggedInUserId } = useStorageContext();
 
 	return (
 		<>
@@ -22,7 +22,7 @@ export default function NavBar() {
 							<li className="navbar-links">
 								<Link
 									className="link-styles"
-									to={`/profile/${id}`}
+									to={`/profile/${loggedInUserId}`}
 								>
 									Profile
 								</Link>

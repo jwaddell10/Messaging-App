@@ -1,4 +1,5 @@
 import UserSideBar from "./UserSideBar";
+import { Outlet } from "react-router";
 import Message from "../Message";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
 		<>
 			<UserSideBar />
 			<Message />
+			<Outlet />
 		</>
 	);
 }

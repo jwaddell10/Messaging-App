@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import bcrypt from "bcryptjs";
-import { create } from "domain";
 
 export default {
 	findUserByName: async (username: string) => {
@@ -111,14 +110,44 @@ export default {
 			throw new Error(error);
 		}
 	},
-	findReceivedMessages: async (id: number) => {
+	findConversations: async (id: number) => {
+
+		/* trying to fetch all messages this user is involved in
+			includes messages user sent, and messages user received
+		*/
 		try {
-			const receivedMessages = await prisma.messages.findMany({
+			const conversations = await prisma.user.findUnique({
 				where: {
-					id: id,
+					id: id
 				},
+				select: {
+					receiver: {
+						select: {
+							text: true
+						}
+					},
+					sender: {
+						select: {
+							text: true
+						}
+					}
+				}
+				
+				// select: {
+				// 	receiver: {
+				// 		select: {
+				// 			text: true,
+				// 		}
+				// 	},
+				// 	sender: {
+				// 		select: {
+				// 			text: true
+				// 		}
+				// 	}
+				// }
 			});
-			return receivedMessages;
+			console.log(conversations, 'conversations')
+			return conversations;
 		} catch (error: any) {
 			throw new Error(error);
 		}
@@ -128,20 +157,21 @@ export default {
 		senderId: number,
 		receiverId: number
 	) => {
+		// console.log(senderId, 'sender id inc')
 		try {
 			const createdMessage = await prisma.messages.create({
 				data: {
 					text: text,
 					createdAt: new Date(),
 					sentMessages: {
-						connect: { id: senderId },
+						connect: [{ id: senderId }],
 					},
 					receivedMessages: {
-						connect: { id: receiverId },
+						connect: [{ id: receiverId }],
 					},
 				},
 			});
-			console.log(createdMessage, "created message");
+			return createdMessage;
 		} catch (error: any) {
 			throw new Error(error);
 		}

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 
-export default function useFetchMessages(id: string, token: string) {
-	const [messages, setMessages] = useState({});
+export default function useFetchMessages(id: string | number, token: string) {
+    console.log(typeof id, `${id} in useFetch`)
+	const [messages, setMessages] = useState([]);
 	const [error, setError] = useState<unknown>(null);
 
-	const fetchMessages = async (id: string, token: string) => {
+	const fetchMessages = async (id: string | number, token: string) => {
         if (!id || !token) return;
 		try {
 			const response = await fetch(
@@ -17,6 +18,7 @@ export default function useFetchMessages(id: string, token: string) {
 				}
 			);
 			const data = await response.json();
+            console.log(data, 'data')
 			setMessages(data.messages);
 		} catch (error) {
 			setError(error);

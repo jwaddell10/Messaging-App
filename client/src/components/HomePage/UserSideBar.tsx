@@ -1,13 +1,15 @@
 import { useStorageContext } from "../../helpers/storageContext";
 import useFetchMessages from "../../helpers/useFetchMessages";
 import useFetchUsers from "../../helpers/useFetchUsers";
+import { useNavigate } from "react-router";
 import "../../Styles/UserSideBar.css";
 
 export default function UserSideBar() {
+	const navigate = useNavigate();
 	const loggedInUser = localStorage.getItem("username");
 	const { users, error } = useFetchUsers();
-	const { id, token } = useStorageContext();
-	// const { refetchMessages } = useFetchMessages(id, token);
+	const { loggedInUserId, token } = useStorageContext();
+	const { refetchMessages } = useFetchMessages(loggedInUserId ?? "", token ?? "");
 	// console.log(refetchMessages, "fetch messages in use");
 	//display all users (except user who is currently logged in) in UserSideBar
 
@@ -15,9 +17,9 @@ export default function UserSideBar() {
 	const filteredUsers = users.filter((user) => user.name !== loggedInUser);
 
 	const handleClick = () => {
-		console.log('click runs')
-		// refetchMessages(id, token)
-	}
+		refetchMessages(loggedInUserId ?? "", token ?? "");
+		navigate(`message/${loggedInUserId}`)
+	};
 
 	if (error) {
 		return (
@@ -33,7 +35,13 @@ export default function UserSideBar() {
 			{filteredUsers &&
 				filteredUsers.map((user) => (
 					<ul className="sidebar-user-list" key={user.id}>
-						<li onClick={handleClick}>{user.name}</li>
+						<li
+							onClick={() => {
+								handleClick();
+							}}
+						>
+							{user.name}
+						</li>
 					</ul>
 				))}
 		</section>

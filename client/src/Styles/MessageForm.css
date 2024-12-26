@@ -1,5 +1,9 @@
-/* .message-form {
+.message-form {
     position: absolute;
-    bottom: 0;
-    right: 0;
-} */
+    bottom: 2rem;
+    right: 2rem;
+}
+
+.message-form-input {
+    width: 50vw;
+}

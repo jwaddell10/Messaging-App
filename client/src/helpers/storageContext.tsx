@@ -5,8 +5,8 @@ import { createContext, ReactNode, useContext, useState } from "react";
 interface StorageContextType {
 	token: string | null;
 	setToken: (arg0: string) => void;
-	id: string | null;
-	setId: (arg0: string) => void;
+	loggedInUserId: string | null;
+	setLoggedInUserId: (arg0: string) => void;
 	username: string | null;
 	setUsername: (arg0: string) => void;
 }
@@ -15,20 +15,20 @@ interface StorageContextType {
 export const StorageContext = createContext<StorageContextType>({
 	token: localStorage.getItem("token"),
 	setToken: (token) => localStorage.setItem("token", token),
-	id: localStorage.getItem("id"),
-	setId: (id) => localStorage.setItem("id", id),
+	loggedInUserId: localStorage.getItem("id"),
+	setLoggedInUserId: (id) => localStorage.setItem("id", id),
 	username: localStorage.getItem("username"),
 	setUsername: (username) => localStorage.setItem("username", username),
 });
 
 export const StorageProvider = (props: { children: ReactNode }) => {
 	const [token, setToken] = useState("");
-	const [id, setId] = useState("");
+	const [loggedInUserId, setLoggedInUserId] = useState("");
 	const [username, setUsername] = useState("");
 
 	return (
 		<StorageContext.Provider
-			value={{ token, setToken, id, setId, username, setUsername }}
+			value={{ token, setToken, loggedInUserId, setLoggedInUserId, username, setUsername }}
 		>
 			{props.children}
 		</StorageContext.Provider>

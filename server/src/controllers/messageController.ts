@@ -1,15 +1,23 @@
 import expressAsyncHandler from "express-async-handler";
 import db from "../db/queries";
 import { validateJWTAndGetUser } from "../passport/jwt";
-import { create } from "domain";
 
 export const getMessages = expressAsyncHandler(async (req, res, next) => {
 	console.log(req.params.id, "this is req paramsid getmessages");
 
-	const receivedMessages = await db.findReceivedMessages(
+	const conversations = await db.findConversations(
 		parseInt(req.params.id)
 	);
-	res.json({ messages: receivedMessages });
+    // console.log(conversations, 'conversations')
+
+    // const receiver = conversations.filter((message) => message.receiver)
+    // const sender = conversations.filter((message) => message.sender)
+    // console.log(receiver, 'receiver', sender, 'sender')
+    // console.log(typeof checkNull, 'check null')
+    // if (checkNull === null) {
+    //     console.log('its null')
+    // }
+	// res.json({ messages: conversations });
 });
 
 export const postMessage = expressAsyncHandler(async (req, res, next) => {
@@ -17,7 +25,11 @@ export const postMessage = expressAsyncHandler(async (req, res, next) => {
 	if (verifiedUser === null) {
 		res.send(403).json({ message: "Access forbidden. Try again later" });
 	}
-	console.log();
-	// const createdMessage = await db.createMessage(req.body.message)
-	// console.log(createdMessage, 'created message')
+
+    const senderId = parseInt(req.params.id);
+    const receiverId = parseInt(req.body.receiverUserId);
+    console.log(req.body, 'req body in post')
+
+	const createdMessage = await db.createMessage(req.body.message, senderId, receiverId)
+	console.log(createdMessage, 'created message')
 });

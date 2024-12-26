@@ -2,3 +2,7 @@
     display: grid;
     grid-area: main;
 }
+
+.message-text {
+    color: white;
+}

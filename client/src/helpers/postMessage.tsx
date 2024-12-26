@@ -1,18 +1,21 @@
 export default async function postMessage({
-	id,
+	loggedInUserId,
+    id,
 	token,
 	message,
 }: {
-	id: string;
+	loggedInUserId: string;
+    id: string;
 	token: string;
 	message: string;
 }) {
+    console.log(loggedInUserId, 'current user id', id, 'id?')
 	try {
 		const response = await fetch(
-			`${import.meta.env.VITE_API_URL}/message/${id}`,
+			`${import.meta.env.VITE_API_URL}/message/${loggedInUserId}`,
 			{
 				method: "POST",
-				body: JSON.stringify({message}),
+				body: JSON.stringify({message: message, receiverUserId: id}),
 				headers: {
                     "Content-type": "application/json",
 					Authorization: `Bearer ${token}`,

@@ -15,7 +15,7 @@ export default function Login() {
 	});
 
 	const { login } = useAuth();
-	const { setToken, setId, setUsername } = useStorageContext();
+	const { setToken, setLoggedInUserId, setUsername } = useStorageContext();
 
 	const [error, setError] = useState<string | null>("");
 
@@ -51,7 +51,7 @@ export default function Login() {
 			if (data.token) {
 				login();
 				setToken(data.token)
-				setId(data.id)
+				setLoggedInUserId(data.id)
 				setUsername(data.username)
 			} else setError(data.message);
 		} catch (error) {
