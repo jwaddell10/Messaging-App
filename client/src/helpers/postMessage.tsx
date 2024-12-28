@@ -9,7 +9,6 @@ export default async function postMessage({
 	token: string;
 	message: string;
 }) {
-    console.log(loggedInUserId, 'current user id', id, 'id?')
 	try {
 		const response = await fetch(
 			`${import.meta.env.VITE_API_URL}/message/${loggedInUserId}`,

@@ -2,6 +2,22 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import bcrypt from "bcryptjs";
 
+interface sentMessages {
+	id: number,
+	text: string,
+	createdAt: Date,
+	senderId: number,
+	receiverId: number,
+}
+
+interface receivedMessages {
+	id: number,
+	text: string,
+	createdAt: Date,
+	senderId: number,
+	receiverId: number,
+}
+
 export default {
 	findUserByName: async (username: string) => {
 		try {
@@ -106,43 +122,38 @@ export default {
 			throw new Error(error);
 		}
 	},
-	findConversations: async (id: number) => {
-
+	findConversations: async (receiverId: number, senderId: number) => {
 		/* trying to fetch all messages this user is involved in
 			includes messages user sent, and messages user received
 		*/
 		try {
 			const conversations = await prisma.user.findUnique({
 				where: {
-					id: id
+					id: receiverId,
 				},
 				select: {
-					receivedMessages: {
-						select: {
-							text: true
-						}
-					},
 					sentMessages: {
 						select: {
-							text: true
-						}
-					}
-				}
-				
-				// select: {
-				// 	receiver: {
-				// 		select: {
-				// 			text: true,
-				// 		}
-				// 	},
-				// 	sender: {
-				// 		select: {
-				// 			text: true
-				// 		}
-				// 	}
-				// }
+							id: true,
+							text: true,
+							createdAt: true,
+							senderId: true,
+							receiverId: true,
+						},
+					},
+					receivedMessages: {
+						select: {
+							id: true,
+							text: true,
+							createdAt: true,
+							senderId: true,
+							receiverId: true,
+						},
+					},
+				},
 			});
-			console.log(conversations, 'conversations')
+			//filter these so id's match!!
+			// console.log(senderId, 'senderid')
 			return conversations;
 		} catch (error: any) {
 			throw new Error(error);

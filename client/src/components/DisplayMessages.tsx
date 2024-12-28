@@ -1,19 +1,38 @@
+import { useEffect, useState } from "react";
+
 interface Messages {
-	receiver: object;
-	sender: object;
+    receivedMessages: Array<Messages>;
+    sentMessages: Array<Messages>;
 }
 
-export default function DisplayMessages({ messages }: { messages: Messages[] }) {
-	console.log(messages, "messages in display messages");
-	
+interface Messages {
+    id: number,
+    text: string,
+    createdAt: number;
+}
+
+export default function DisplayMessages({ messages }: { messages: Messages }) {
+    const { sentMessages, receivedMessages } = messages;
+
+    const [sortedMessages, setSortedMessages] = useState([])
+
+    useEffect(() => {
+        if (sentMessages) {
+            const allMessages = [...sentMessages, ...receivedMessages]
+            const date = allMessages.sort((a, b) => a.createdAt - b.createdAt)
+            setSortedMessages(date)
+        }
+    }, [receivedMessages, sentMessages])
+
+    //goal here? combine them and then sort by date
+
 	return (
 		<ul>
-			{/* {messages.map((message, index) => (
-				<li key={index}>
-					<p>Receiver: {JSON.stringify(message.receiver)}</p>
-					<p>Sender: {JSON.stringify(message.sender)}</p>
-				</li>
-			))} */}
+			 {sortedMessages && sortedMessages.map((message, index) => (
+                <li key={message.id}>
+                    <p>{message.text}</p>
+                </li>
+            ))}
 		</ul>
 	);
 }

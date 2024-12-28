@@ -1,24 +1,26 @@
 import { useStorageContext } from "../../helpers/storageContext";
 import useFetchMessages from "../../helpers/useFetchMessages";
 import useFetchUsers from "../../helpers/useFetchUsers";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import "../../Styles/UserSideBar.css";
 
 export default function UserSideBar() {
+	const { id } = useParams()
 	const navigate = useNavigate();
 	const loggedInUser = localStorage.getItem("username");
 	const { users, error } = useFetchUsers();
 	const { loggedInUserId, token } = useStorageContext();
-	const { refetchMessages } = useFetchMessages(loggedInUserId ?? "", token ?? "");
+	const { refetchMessages } = useFetchMessages(loggedInUserId ?? "", id ?? "", token ?? "");
 	// console.log(refetchMessages, "fetch messages in use");
 	//display all users (except user who is currently logged in) in UserSideBar
 
 	//when clicked, display messages between those users
 	const filteredUsers = users.filter((user) => user.name !== loggedInUser);
 
-	const handleClick = () => {
-		refetchMessages(loggedInUserId ?? "", token ?? "");
-		navigate(`message/${loggedInUserId}`)
+	const handleClick = (id: number) => {
+		console.log(id, 'id in handleclicks')
+		refetchMessages(loggedInUserId ?? "", id, token ?? "");
+		navigate(`message/${id}`)
 	};
 
 	if (error) {
@@ -37,7 +39,7 @@ export default function UserSideBar() {
 					<ul className="sidebar-user-list" key={user.id}>
 						<li
 							onClick={() => {
-								handleClick();
+								handleClick(user.id)
 							}}
 						>
 							{user.name}
