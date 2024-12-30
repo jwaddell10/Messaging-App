@@ -3,19 +3,19 @@ const prisma = new PrismaClient();
 import bcrypt from "bcryptjs";
 
 interface sentMessages {
-	id: number,
-	text: string,
-	createdAt: Date,
-	senderId: number,
-	receiverId: number,
+	id: number;
+	text: string;
+	createdAt: Date;
+	senderId: number;
+	receiverId: number;
 }
 
 interface receivedMessages {
-	id: number,
-	text: string,
-	createdAt: Date,
-	senderId: number,
-	receiverId: number,
+	id: number;
+	text: string;
+	createdAt: Date;
+	senderId: number;
+	receiverId: number;
 }
 
 export default {
@@ -135,6 +135,11 @@ export default {
 					sentMessages: {
 						select: {
 							id: true,
+							sender: {
+								select: {
+									name: true,
+								},
+							},
 							text: true,
 							createdAt: true,
 							senderId: true,
@@ -144,6 +149,11 @@ export default {
 					receivedMessages: {
 						select: {
 							id: true,
+							sender: {
+								select: {
+									name: true,
+								}
+							},
 							text: true,
 							createdAt: true,
 							senderId: true,

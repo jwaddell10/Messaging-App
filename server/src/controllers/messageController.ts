@@ -2,10 +2,17 @@ import expressAsyncHandler from "express-async-handler";
 import db from "../db/queries";
 import { validateJWTAndGetUser } from "../passport/jwt";
 
+interface sender {
+	name: string;
+}
+interface receiver {
+	name: string;
+}
 interface SentMessage {
 	id: number;
 	createdAt: Date;
 	receiverId: number;
+	sender: sender;
 }
 
 interface ReceivedMessage {
@@ -30,7 +37,6 @@ export const getMessages = expressAsyncHandler(async (req, res, next) => {
 		(message: ReceivedMessage) =>
 			message.senderId === parseInt(req.params.senderId)
 	);
-
 	const sentMessages = (conversations?.sentMessages ?? []).filter(
 		(message: SentMessage) =>
 			message.receiverId === parseInt(req.params.senderId)
