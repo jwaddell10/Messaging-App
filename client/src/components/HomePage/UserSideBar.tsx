@@ -18,7 +18,6 @@ export default function UserSideBar() {
 	const filteredUsers = users.filter((user) => user.name !== loggedInUser);
 
 	const handleClick = (id: number) => {
-		console.log(id, 'id in handleclicks')
 		refetchMessages(loggedInUserId ?? "", id, token ?? "");
 		navigate(`message/${id}`)
 	};

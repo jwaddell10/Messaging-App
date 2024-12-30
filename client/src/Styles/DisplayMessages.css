@@ -1,0 +1,10 @@
+.messages {
+    /* display: flex; */
+    color: white;
+}
+
+.logged-in-user-messages {
+    display: flex;
+    justify-content: flex-end;
+    color: pink;
+}
