@@ -1,8 +1,26 @@
 import { useState, useEffect } from "react";
 
+interface sentMessages {
+	id: number,
+	text: string,
+}
+
+interface receivedMessages {
+	id: number,
+	text: string
+}
+interface Message {
+	sentMessages: sentMessages,
+	receivedMessages: receivedMessages,
+	id: number,
+	text: string,
+	senderId: number,
+	receiverId: number,
+	createdAt: Date,
+}
 
 export default function useFetchMessages(loggedInUserId: string | number, id: string | number, token: string) {
-	const [messages, setMessages] = useState([]);
+	const [messages, setMessages] = useState<Array<Message>>([]);
 	const [error, setError] = useState<unknown>(null);
 
 	const fetchMessages = async (loggedInUserId: string | number, id: string | number, token: string) => {
@@ -18,7 +36,7 @@ export default function useFetchMessages(loggedInUserId: string | number, id: st
 				}
 			);
 			const data = await response.json();
-			setMessages(data);
+			setMessages(data.messages);
 		} catch (error) {
 			setError(error);
 		}

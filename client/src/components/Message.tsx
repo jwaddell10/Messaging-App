@@ -5,24 +5,16 @@ import "../Styles/Message.css";
 import { useParams } from "react-router";
 import DisplayMessages from "./DisplayMessages";
 
-interface Receiver {
-	text: string;
-}
-
-interface Sender {
-	text: string;
-}
-
-interface Message {
-	receiver: Receiver;
-	sender: Sender;
-	text: string;
+interface Messages {
+    id: number,
+    text: string,
+    createdAt: number;
 }
 
 export default function Message() {
 	const { id } = useParams();
 	const { loggedInUserId, token } = useStorageContext();
-	const { messages } = useFetchMessages(loggedInUserId ?? "", token ?? "");
+	const { messages } = useFetchMessages(loggedInUserId ?? "", id ?? "", token ?? "");
 
     if (!id || !token) {
 		return <p>Error: cannot load messages</p>;

@@ -2,65 +2,51 @@ import expressAsyncHandler from "express-async-handler";
 import db from "../db/queries";
 import { validateJWTAndGetUser } from "../passport/jwt";
 
+interface SentMessage {
+	id: number;
+	createdAt: Date;
+	receiverId: number;
+}
+
+interface ReceivedMessage {
+	id: number;
+	createdAt: Date;
+	senderId: number;
+}
+
 export const getMessages = expressAsyncHandler(async (req, res, next) => {
-	console.log(req.params, "this is req paramsid getmessages");
 	const conversations = await db.findConversations(
 		parseInt(req.params.receiverId),
 		parseInt(req.params.senderId)
 	);
-	// console.log(
-	// 	conversations?.sentMessages,
-	// 	"conversations sent in get messages",
-	// 	conversations?.receivedMessages,
-	// 	"conv received"
-	// );
-	console.log(req.params.receiverId, "req reciever id");
-	//if person receiving the message is the same as the selected receiver, keep message
-	//if person sending message sends it to the person receiving the message, keep message
 
-	const receivedMessages = conversations?.receivedMessages.filter(
-		(message) => message.senderId === parseInt(req.params.senderId)
-	);
-
-	const sentMessages = conversations?.sentMessages.filter(
-		(message) => message.receiverId === parseInt(req.params.senderId)
-	);
-
-	if (receivedMessages && sentMessages) {
-		res.json({
-			receivedMessages: receivedMessages,
-			sentMessages: sentMessages,
+	if (!conversations) {
+		res.status(500).json({
+			message: "Unable to fetch conversations. Try again later",
 		});
+	}
+
+	const receivedMessages = (conversations?.receivedMessages ?? []).filter(
+		(message: ReceivedMessage) =>
+			message.senderId === parseInt(req.params.senderId)
+	);
+
+	const sentMessages = (conversations?.sentMessages ?? []).filter(
+		(message: SentMessage) =>
+			message.receiverId === parseInt(req.params.senderId)
+	);
+
+	const allMessages = [...receivedMessages, ...sentMessages];
+	const sortedMessages = allMessages.sort(
+		(a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+	);
+
+	if (sortedMessages) {
+		res.status(200).json({ messages: sortedMessages });
 	} else
-		res.status(400).json({
-			message:
-				"An error has occurred with fetching messages. Try again later",
+		res.status(500).json({
+			message: "Unable to retrieve messages. Try again later",
 		});
-
-	//rec doesnt fillter correctly....
-	// conversations?.receivedMessages.filter(
-	// 	(message) => message.senderId === parseInt(req.params.senderId)
-	// ),
-	// console.log(receivedMessages, "received", sentMessages, "sent messages");
-	// console.log(conversations, "conversatiosn in get messages");
-	// console.log(conversations, 'conversations')
-
-	// if (conversations === null) {
-	// 	res.json({
-	// 		message: "No messages yet. Create a message to start conversation",
-	// 	});
-	// }
-
-	// if (conversations) {
-	// 	res.json(conversations);
-	// }
-	// const sender = conversations.filter((message) => message.sender)
-	// console.log(receiver, 'receiver', sender, 'sender')
-	// console.log(typeof checkNull, 'check null')
-	// if (checkNull === null) {
-	//     console.log('its null')
-	// }
-	// res.json({ messages: conversations });
 });
 
 export const postMessage = expressAsyncHandler(async (req, res, next) => {
