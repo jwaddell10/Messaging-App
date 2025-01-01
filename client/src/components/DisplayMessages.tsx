@@ -25,32 +25,34 @@ interface Messages {
 }
 
 export default function DisplayMessages({ messages }: { messages: Messages }) {
-    const { loggedInUserId } = useStorageContext();
+	const { loggedInUserId } = useStorageContext();
 
-    return (
-        <ul className="messages">
-            {messages.length > 0 ? (
-                messages.map((message: Messages) => (
-                    <li key={message.id}>
-                        {loggedInUserId == message.senderId ? (
-                            <div className="logged-in-user-messages">
-                                <h1>Me</h1>
-                                <p>{message.text}</p>
-                                <p>{convertDate(message.createdAt)}</p>
-                            </div>
-                        ) : (
-                            <div>
-                                <h1>{message.sender.name}</h1>
-                                <p>{message.text}</p>
-                                <p>{convertDate(message.createdAt)}</p>
-                            </div>
-                        )}
-                    </li>
-                ))
-            ) : (
-                <h1>No messages. Be the first to send a message</h1>
-            )}
-        </ul>
-    );
+	return (
+		<ul className="messages">
+			{messages.length > 0 ? (
+				messages.map((message: Messages) => (
+					<li key={message.id}>
+						{loggedInUserId == message.senderId ? (
+							<div className="sent-messages">
+								<div className="sent-messages-content-container">
+									<p>{convertDate(message.createdAt)}</p>
+									<p>{message.text}</p>
+								</div>
+							</div>
+						) : (
+							<div className="received-messages">
+								<div className="received-messages-content-container">
+									<p>Username: {message.sender.name}</p>
+									<p>{convertDate(message.createdAt)}</p>
+									<p>{message.text}</p>
+								</div>
+							</div>
+						)}
+					</li>
+				))
+			) : (
+				<h1 style={{color: "white"}}>No messages. Be the first to send a message</h1>
+			)}
+		</ul>
+	);
 }
-

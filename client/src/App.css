@@ -1,9 +1,9 @@
-.link-styles {
-	color: #f7fff7;
+.navbar-link-styles {
+	color: #0C1713;
 	text-decoration: none;
 }
 
-.link-styles:hover {
+.navbar-link-styles:hover {
 	color: #000300;
 }
 
@@ -15,5 +15,5 @@
 	grid-template-areas:
 		"nav nav nav"
 		"sidebar main main"
-		"sidebar main main";
+		"sidebar main main"
 }

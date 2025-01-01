@@ -1,0 +1,15 @@
+.authentication-form {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+}
+
+.form-link-styles {
+    color: #91E5F6;
+}
+
+.form-link-styles:hover {
+    color: #91E5F6;
+}

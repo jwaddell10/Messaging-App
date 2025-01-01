@@ -2,8 +2,9 @@
     /* position: fixed; */
     display: grid;
     grid-area: sidebar;
-    background-color: #000300;
-    color: #F7FFF7;
+    background-color: #2274A5;
+    color: #0C1713;
+    height: 100vh;
     /* left: 0; */
     /* bottom: 0px; */
 }

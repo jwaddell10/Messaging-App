@@ -13,7 +13,7 @@ export default function NavBar() {
 			<nav className="navbar">
 				<ul className="navbar-links-section">
 					<li className="navbar-links">
-						<Link className="link-styles" to="/">
+						<Link className="navbar-link-styles" to="/">
 							Home
 						</Link>
 					</li>
@@ -21,7 +21,7 @@ export default function NavBar() {
 						<>
 							<li className="navbar-links">
 								<Link
-									className="link-styles"
+									className="navbar-link-styles"
 									to={`/profile/${loggedInUserId}`}
 								>
 									Profile
@@ -29,7 +29,7 @@ export default function NavBar() {
 							</li>
 							<li className="navbar-links">
 								<Link
-									className="link-styles"
+									className="navbar-link-styles"
 									to="/"
 									onClick={logout}
 								>
@@ -39,7 +39,7 @@ export default function NavBar() {
 						</>
 					) : (
 						<li className="navbar-links">
-							<Link className="link-styles" to="/">
+							<Link className="navbar-link-styles" to="/">
 								Login
 							</Link>
 						</li>

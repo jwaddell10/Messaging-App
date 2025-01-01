@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { Link } from "react-router";
 import Submit from "../Submit";
 import { useNavigate } from "react-router";
 import { useStorageContext } from "../helpers/storageContext";
@@ -64,7 +65,7 @@ export default function Signup() {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="authentication-form">
 			<label htmlFor="username">Username:</label>
 			<input
 				type="text"
@@ -94,6 +95,9 @@ export default function Signup() {
 				required
 			/>
 			<Submit text="Sign Up" />
+			<div className="redirect-to-login">
+				Have an account? Login <Link className="form-link-styles" to="/">here</Link>
+			</div>
 			{error}
 		</form>
 	);

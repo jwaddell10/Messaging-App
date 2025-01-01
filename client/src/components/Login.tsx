@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import Submit from "../Submit";
 import { useAuth } from "../helpers/authContext";
 import { useStorageContext } from "../helpers/storageContext";
+import "../Styles/AuthenticationForms.css"
 interface LogInFormData {
 	username: string;
 	password: string;
@@ -13,7 +14,6 @@ export default function Login() {
 		username: "",
 		password: "",
 	});
-	const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 	const { login } = useAuth();
 	const { setToken, setLoggedInUserId, setUsername } = useStorageContext();
@@ -65,7 +65,7 @@ export default function Login() {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="authentication-form">
 			<label htmlFor="username">Username:</label>
 			<input
 				type="text"
@@ -84,7 +84,7 @@ export default function Login() {
 			/>
 			<Submit text="Log In" />
 			<div className="redirect-to-signup">
-				Not a member? Sign up <Link to="/signup">here</Link>
+				Not a member? Sign up <Link className="form-link-styles" to="/signup">here</Link>
 			</div>
 			{error}
 		</form>

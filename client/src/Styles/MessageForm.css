@@ -1,7 +1,9 @@
 .message-form {
-    position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    position: sticky;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    right: 0;
 }
 
 .message-form-input {

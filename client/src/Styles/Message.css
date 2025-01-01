@@ -6,3 +6,7 @@
 .message-text {
     color: white;
 }
+
+.messages {
+    height: 90vh;
+}

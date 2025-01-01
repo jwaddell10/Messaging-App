@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import useFetchProfile from "../helpers/useFetchProfile";
 import updateProfile from "../helpers/updateProfile";
+import "../Styles/ProfileForm.css"
 
 export default function Profile() {
 	const id = localStorage.getItem("id");
@@ -44,7 +45,7 @@ export default function Profile() {
 	return (
 		<div>
 			{profile && (
-				<form onSubmit={handleSubmit}>
+				<form className="profile-form" onSubmit={handleSubmit}>
 					<label>Username: {profile.name}</label>
 					<label>About me: {profile.bio}</label>
 					<textarea
