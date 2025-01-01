@@ -13,6 +13,7 @@ export default function Login() {
 		username: "",
 		password: "",
 	});
+	const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 	const { login } = useAuth();
 	const { setToken, setLoggedInUserId, setUsername } = useStorageContext();
@@ -49,10 +50,10 @@ export default function Login() {
 			const data = await response.json();
 
 			if (data.token) {
+				setToken(data.token);
+				setLoggedInUserId(data.id);
+				setUsername(data.username);
 				login();
-				setToken(data.token)
-				setLoggedInUserId(data.id)
-				setUsername(data.username)
 			} else setError(data.message);
 		} catch (error) {
 			if (error instanceof Error) {

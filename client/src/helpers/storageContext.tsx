@@ -1,6 +1,6 @@
 //storage context so I can pass around localstorage values
 
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 interface StorageContextType {
 	token: string | null;
@@ -25,6 +25,13 @@ export const StorageProvider = (props: { children: ReactNode }) => {
 	const [token, setToken] = useState("");
 	const [loggedInUserId, setLoggedInUserId] = useState("");
 	const [username, setUsername] = useState("");
+
+	useEffect(() => {
+		const JWTToken = localStorage.getItem("JWTToken")
+		if (JWTToken) {
+			setToken(JWTToken)
+		}
+	}, [token])
 
 	return (
 		<StorageContext.Provider

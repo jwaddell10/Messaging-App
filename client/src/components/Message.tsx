@@ -15,9 +15,9 @@ export default function Message() {
 	const { id } = useParams();
 	const { loggedInUserId, token } = useStorageContext();
 	const { messages } = useFetchMessages(loggedInUserId ?? "", id ?? "", token ?? "");
-
+//check flow of page
     if (!id || !token) {
-		return <p>Error: cannot load messages</p>;
+		return <p>Click on a user to load messages</p>;
 	}
 
 	return (

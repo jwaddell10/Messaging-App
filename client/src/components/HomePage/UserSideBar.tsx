@@ -25,7 +25,7 @@ export default function UserSideBar() {
 	if (error) {
 		return (
 			<p style={{ color: "white" }}>
-				Failed to load users. Please try again later
+				{error}
 			</p>
 		);
 	}

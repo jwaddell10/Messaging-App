@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+// import { useStorageContext } from "./storageContext";
 
 interface User {
 	id: number;
@@ -6,10 +7,10 @@ interface User {
 }
 
 export default function useFetchUsers() {
-	const token = localStorage.getItem("token");
+	const token = localStorage.getItem("token")
 	const [users, setUsers] = useState<User[]>([]);
 	const [error, setError] = useState<string>("");
-
+	
 	useEffect(() => {
 		const fetchUsers = async () => {
 			const response = await fetch(
@@ -22,6 +23,7 @@ export default function useFetchUsers() {
 				}
 			);
 			const data = await response.json();
+			console.log(data, 'data from usefetchusers')
 			if (data.message) {
 				setError(data.message);
 			}

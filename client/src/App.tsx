@@ -11,9 +11,10 @@ export default function App() {
 	const { token } = useStorageContext();
 
 	useEffect(() => {
-		const JWTToken = token ?? "";
+		const JWTToken = localStorage.getItem("token") ?? "";
 		setUser(tokenActive(JWTToken));
 	}, [setUser, token, user]);
+	
 	return (
 		<div className="page-container">
 			<Router />

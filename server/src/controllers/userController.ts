@@ -5,6 +5,7 @@ import { validateJWTAndGetUser } from "../passport/jwt";
 import db from "../db/queries";
 
 export const getAllUsers = asyncHandler(async (req, res, next) => {
+	console.log(req.token, 'req token')
 	const verifiedUser = validateJWTAndGetUser(req.token);
 
 	if (!verifiedUser) {
@@ -12,14 +13,19 @@ export const getAllUsers = asyncHandler(async (req, res, next) => {
 			message:
 				"Unable to validate user credentials. Try logging out/logging in to reauthenticate",
 		});
+		return;
 	}
 	const users = await db.findAllUsers();
 
 	if (!users) {
-		res.json({ message: "No users at this time." });
+		res.sendStatus(400).json({ message: "No users at this time." });
+		return;
 	}
 
-	res.json({ users });
+	if (users) {
+		res.json({ users });
+		return;
+	}
 });
 
 export const getSingleUser = asyncHandler(async (req, res, next) => {
